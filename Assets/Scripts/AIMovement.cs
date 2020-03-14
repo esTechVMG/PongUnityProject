@@ -8,10 +8,6 @@ public class AIMovement : MonoBehaviour
     // Start is called before the first frame update
     public GameObject ball;
     private int x;
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -21,7 +17,7 @@ public class AIMovement : MonoBehaviour
         {
             x = 1;
         }
-        else
+        else if(ball.transform.position.y<pos.y)
         {
             x = -1;
         }

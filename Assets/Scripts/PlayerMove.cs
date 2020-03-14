@@ -21,7 +21,8 @@ public class PlayerMove : MonoBehaviour
 }
 
     /* OLD MOVEMENT CODE BASED ON PHYSICS
-     //This code needs rotation clamping code addition to avoid physics bugs
+     //This code works better with rotation clamping additions
+     //in order to avoid physics-calculations-related bugs
     private Rigidbody rb;
     void Start()
     {

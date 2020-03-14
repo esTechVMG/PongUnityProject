@@ -7,18 +7,24 @@ using Random = UnityEngine.Random;
 
 public class BallMove : MonoBehaviour
 {
-    public float force = 1.0f;
+    public float startForce = 5.0f;
+    private float force;
+    public GameObject outOne, outTwo;
     public Text counterOne;
     public Text counterTwo;
     public Text startCounter;
     private Rigidbody rigid;
-    public int[] counter = new int[] {0, 0};
-
-    public GameObject outOne, outTwo;
+    private Vector3 startposition;
+    private int[] counter = new int[] {0, 0};
+    
+    
 
     // Start is called before the first frame update
     void Start()
     {
+        counterOne.text = counter[0].ToString();
+        counterTwo.text = counter[0].ToString();
+        startposition = transform.position;
         rigid = GetComponent<Rigidbody>();
         //Initial ball throw coroutine
         StartCoroutine("ThrowBall");
@@ -46,11 +52,13 @@ public class BallMove : MonoBehaviour
         {
             counterTwo.text = (++counter[1]).ToString();
             counterUpdate();
+            StartCoroutine("ThrowBall");
         }
         else if (id == outTwo.GetInstanceID())
         {
             counterOne.text = (++counter[0]).ToString();
             counterUpdate();
+            StartCoroutine("ThrowBall");
         }
     }
 
@@ -63,29 +71,36 @@ public class BallMove : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1);
             force += 0.1f;
         }
     }
 
     IEnumerator ThrowBall()
     {
+        //Score counter text value update
+        
+        //Reset Ball Movement, rotation, position and  movement force
+        rigid.velocity = Vector3.zero;
+        rigid.angularVelocity = Vector3.zero;
+        transform.rotation=new Quaternion(0,0,0,0);
+        transform.position=startposition;
+        //5 seconds counter
         for (int a = 5; a != 0; a--)
         {
             startCounter.text = a.ToString();
             yield return new WaitForSeconds(1);
         }
-        //Score counter initial value
-        counterOne.text = counter[0].ToString();
-        counterTwo.text = counter[0].ToString();
-        
+
         //Random launch
         if (randomBool())
         {
-            transform.Rotate(0, 180, 0);
+            transform.Rotate(0, 0, 180);
         }
         //Rotates random 45
-        transform.Rotate(Vector3.forward, Random.Range(-45, 45), Space.Self);
+        transform.Rotate(Vector3.forward, Random.Range(-22.5f, 22.5f), Space.Self);
+        //Initial force
+        force = startForce;
         //Start impulse
         rigid.AddForce(transform.right * force, ForceMode.VelocityChange);
         
