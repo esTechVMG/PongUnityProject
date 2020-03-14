@@ -13,17 +13,17 @@ public class AIMovement : MonoBehaviour
     void Update()
     {
         var pos = transform.position;
-        if (ball.transform.position.y>pos.y)
+        if (Mathf.Floor(ball.transform.position.y*100)>Mathf.Floor(pos.y*100))
         {
             x = 1;
         }
-        else if(ball.transform.position.y<pos.y)
+        else
         {
             x = -1;
         }
         pos+= transform.right*MoveSpeed*Time.deltaTime*x;
         //Clamping
-        pos.y = Mathf.Clamp(pos.y,-3.9f,3.9f);
+        pos.y = Mathf.Clamp(pos.y,-3.7f,3.7f);
         transform.position = pos;
     }
     IEnumerator SpeedIncrease()//Increases Ball speed over the time

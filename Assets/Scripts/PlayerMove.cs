@@ -15,7 +15,7 @@ public class PlayerMove : MonoBehaviour
             pos+= transform.right * (force * Time.deltaTime * x);
         }
         //Clamp the position
-        pos.y = Mathf.Clamp(pos.y,-3.9f,3.9f);
+        pos.y = Mathf.Clamp(pos.y,-3.7f,3.7f);
         transform.position = pos;
     }
 }
