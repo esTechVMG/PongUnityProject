@@ -24,9 +24,9 @@ public class BallMove : MonoBehaviour
         startposition = transform.position;
         rigid = GetComponent<Rigidbody>();
         //Initial ball throw coroutine
-        StartCoroutine("ThrowBall");
+        StartCoroutine(nameof(ThrowBall));
         //Ball Speed Increase Coroutine
-        StartCoroutine("SpeedIncrease");
+        StartCoroutine(nameof(SpeedIncrease));
     }
 
     bool randomBool() //Generates a random boolean
@@ -45,33 +45,22 @@ public class BallMove : MonoBehaviour
         int id = other.gameObject.GetInstanceID();
         if (id == outOne.GetInstanceID())
         {
-            counterTwo.text = (++counter[1]).ToString();
-            counterUpdate();
-            StartCoroutine("ThrowBall");
+            addCount(counterTwo,++counter[1]);
         }
         else if (id == outTwo.GetInstanceID())
         {
-            counterOne.text = (++counter[0]).ToString();
-            counterUpdate();
-            StartCoroutine("ThrowBall");
+            addCount(counterOne,++counter[0]);
         }
         else if(id == playerOne.GetInstanceID()|id==playerTwo.GetInstanceID())
         {
             //Players bounce based on bounce location
-            float e = Mathf.Abs(Vector3.Angle(other.transform.position-transform.position,other.transform.right))-90;
-            Debug.Log(e);
-            rigid.angularVelocity = Vector3.zero;
-            transform.rotation=new Quaternion(0,0,0,0);
-            rigid.velocity = Vector3.zero;
-            if (id == playerTwo.GetInstanceID())
+            float e = Vector3.Angle(other.transform.position-transform.position,other.transform.right)-90;
+            resetBall();
+            if (id == playerTwo.GetInstanceID()&e<90)
             {
                 transform.Rotate(0, 0, 180);
             }
-            if (randomBool())
-            {
-                e = -e;
-            }
-            transform.Rotate(transform.forward,e, Space.World);
+            transform.Rotate(transform.forward,Mathf.Clamp(e*0.75f,-75,75), Space.World);
             rigid.AddForce(transform.right*force,ForceMode.VelocityChange);
         }
     }
@@ -95,9 +84,7 @@ public class BallMove : MonoBehaviour
         //Score counter text value update
         
         //Reset Ball Movement, rotation, position and  movement force
-        rigid.angularVelocity = Vector3.zero;
-        transform.rotation=new Quaternion(0,0,0,0);
-        rigid.velocity = Vector3.zero;
+        resetBall();
         transform.position=startposition;
         //5 seconds counter
         startCounter.enabled = true;
@@ -127,5 +114,19 @@ public class BallMove : MonoBehaviour
     private void rotateRandomDegrees(float degrees)
     {
         transform.Rotate(Vector3.forward, Random.Range(-degrees, degrees), Space.Self);
+    }
+
+    private void resetBall()
+    {
+        rigid.angularVelocity = Vector3.zero;
+        transform.rotation=new Quaternion(0,0,0,0);
+        rigid.velocity = Vector3.zero;
+    }
+
+    private void addCount(Text addedText,int score)
+    {
+        addedText.text = score.ToString();
+        counterUpdate();
+        StartCoroutine(nameof(ThrowBall));
     }
 }
