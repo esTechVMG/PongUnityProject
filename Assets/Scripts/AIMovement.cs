@@ -21,7 +21,7 @@ public class AIMovement : MonoBehaviour
         {
             x = -1;
         }
-        pos+= transform.right*MoveSpeed*Time.deltaTime*x;
+        pos+= transform.right*Mathf.Floor(MoveSpeed*Time.deltaTime*x*100)/100;
         //Clamping
         pos.y = Mathf.Clamp(pos.y,-3.7f,3.7f);
         transform.position = pos;

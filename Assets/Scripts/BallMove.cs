@@ -7,12 +7,9 @@ using Random = UnityEngine.Random;
 
 public class BallMove : MonoBehaviour
 {
-    public float startForce = 5.0f;
-    private float force;
-    public GameObject outOne, outTwo;
-    public Text counterOne;
-    public Text counterTwo;
-    public Text startCounter;
+    public float startForce = 5.0f,force;
+    public GameObject outOne, outTwo,playerOne,playerTwo;
+    public Text counterOne, counterTwo,startCounter;
     private Rigidbody rigid;
     private Vector3 startposition;
     private int[] counter = new int[] {0, 0};
@@ -59,6 +56,18 @@ public class BallMove : MonoBehaviour
             counterOne.text = (++counter[0]).ToString();
             counterUpdate();
             StartCoroutine("ThrowBall");
+        }
+        else if(id == playerOne.GetInstanceID())
+        {
+            float e = Vector3.Angle(other.transform.position, transform.position);
+            if (e < 15)
+            {
+                
+            }
+        }
+        else if(id== playerTwo.GetInstanceID())
+        {
+            
         }
     }
 
