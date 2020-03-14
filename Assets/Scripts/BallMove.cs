@@ -41,8 +41,6 @@ public class BallMove : MonoBehaviour
         Vector3 v = rigid.velocity;
         v = v.normalized;
         v *= force;
-        rigid.velocity = v;
-        
         //Checks for score counter updates
         int id = other.gameObject.GetInstanceID();
         if (id == outOne.GetInstanceID())
@@ -59,17 +57,22 @@ public class BallMove : MonoBehaviour
         }
         else if(id == playerOne.GetInstanceID()|id==playerTwo.GetInstanceID())
         {
-            float e = Vector3.Angle(other.transform.position-transform.position,other.transform.right);
-            Debug.Log(e-90);
-            /*if (e < 15)
+            //Players bounce based on bounce location
+            float e = Mathf.Abs(Vector3.Angle(other.transform.position-transform.position,other.transform.right))-90;
+            Debug.Log(e);
+            rigid.angularVelocity = Vector3.zero;
+            transform.rotation=new Quaternion(0,0,0,0);
+            rigid.velocity = Vector3.zero;
+            if (id == playerTwo.GetInstanceID())
             {
-                resetBall();
-                if (id == playerTwo.GetInstanceID())
-                {
-                    transform.Rotate(0, 0, 180);
-                    rotateRandomDegrees(e*3.5f);
-                }
-            }*/
+                transform.Rotate(0, 0, 180);
+            }
+            if (randomBool())
+            {
+                e = -e;
+            }
+            transform.Rotate(transform.forward,e, Space.World);
+            rigid.AddForce(transform.right*force,ForceMode.VelocityChange);
         }
     }
 
@@ -92,7 +95,8 @@ public class BallMove : MonoBehaviour
         //Score counter text value update
         
         //Reset Ball Movement, rotation, position and  movement force
-        resetBall();
+        rigid.angularVelocity = Vector3.zero;
+        transform.rotation=new Quaternion(0,0,0,0);
         rigid.velocity = Vector3.zero;
         transform.position=startposition;
         //5 seconds counter
@@ -123,10 +127,5 @@ public class BallMove : MonoBehaviour
     private void rotateRandomDegrees(float degrees)
     {
         transform.Rotate(Vector3.forward, Random.Range(-degrees, degrees), Space.Self);
-    }
-    private void resetBall()
-    {
-        rigid.angularVelocity = Vector3.zero;
-        transform.rotation=new Quaternion(0,0,0,0);
     }
 }

@@ -1439,8 +1439,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startForce: 5
+  force: 0
   outOne: {fileID: 107771943}
   outTwo: {fileID: 577583321}
+  playerOne: {fileID: 861573331}
+  playerTwo: {fileID: 918193428}
   counterOne: {fileID: 35056938}
   counterTwo: {fileID: 469189184}
   startCounter: {fileID: 145053325}
