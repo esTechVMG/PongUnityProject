@@ -86,11 +86,15 @@ public class BallMove : MonoBehaviour
         transform.rotation=new Quaternion(0,0,0,0);
         transform.position=startposition;
         //5 seconds counter
+        startCounter.enabled = true;
         for (int a = 5; a != 0; a--)
         {
             startCounter.text = a.ToString();
             yield return new WaitForSeconds(1);
         }
+
+        startCounter.enabled = false;
+        
 
         //Random launch
         if (randomBool())
