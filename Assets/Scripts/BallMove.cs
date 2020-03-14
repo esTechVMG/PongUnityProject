@@ -57,17 +57,19 @@ public class BallMove : MonoBehaviour
             counterUpdate();
             StartCoroutine("ThrowBall");
         }
-        else if(id == playerOne.GetInstanceID())
+        else if(id == playerOne.GetInstanceID()|id==playerTwo.GetInstanceID())
         {
-            float e = Vector3.Angle(other.transform.position, transform.position);
-            if (e < 15)
+            float e = Vector3.Angle(other.transform.position-transform.position,other.transform.right);
+            Debug.Log(e-90);
+            /*if (e < 15)
             {
-                
-            }
-        }
-        else if(id== playerTwo.GetInstanceID())
-        {
-            
+                resetBall();
+                if (id == playerTwo.GetInstanceID())
+                {
+                    transform.Rotate(0, 0, 180);
+                    rotateRandomDegrees(e*3.5f);
+                }
+            }*/
         }
     }
 
@@ -90,9 +92,8 @@ public class BallMove : MonoBehaviour
         //Score counter text value update
         
         //Reset Ball Movement, rotation, position and  movement force
+        resetBall();
         rigid.velocity = Vector3.zero;
-        rigid.angularVelocity = Vector3.zero;
-        transform.rotation=new Quaternion(0,0,0,0);
         transform.position=startposition;
         //5 seconds counter
         startCounter.enabled = true;
@@ -111,11 +112,21 @@ public class BallMove : MonoBehaviour
             transform.Rotate(0, 0, 180);
         }
         //Rotates random 45
-        transform.Rotate(Vector3.forward, Random.Range(-22.5f, 22.5f), Space.Self);
+        rotateRandomDegrees(22.5f);
         //Initial force
         force = startForce;
         //Start impulse
         rigid.AddForce(transform.right * force, ForceMode.VelocityChange);
         
+    }
+
+    private void rotateRandomDegrees(float degrees)
+    {
+        transform.Rotate(Vector3.forward, Random.Range(-degrees, degrees), Space.Self);
+    }
+    private void resetBall()
+    {
+        rigid.angularVelocity = Vector3.zero;
+        transform.rotation=new Quaternion(0,0,0,0);
     }
 }
