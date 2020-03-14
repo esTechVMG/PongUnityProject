@@ -60,7 +60,7 @@ public class BallMove : MonoBehaviour
                 transform.Rotate(0, 0, 180);
             }
             transform.Rotate(transform.forward,Mathf.Clamp(e*0.75f,-75,75), Space.World);
-            rigid.AddForce(transform.right*force*e/9*10,ForceMode.VelocityChange);
+            rigid.AddForce(transform.right*(force+Mathf.Abs(e)/10),ForceMode.VelocityChange);
         }
     }
 
