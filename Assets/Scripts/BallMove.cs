@@ -26,7 +26,6 @@ public class BallMove : MonoBehaviour
         //Initial ball throw coroutine
         StartCoroutine(nameof(ThrowBall));
         //Ball Speed Increase Coroutine
-        StartCoroutine(nameof(SpeedIncrease));
     }
 
     bool randomBool() //Generates a random boolean
@@ -61,22 +60,13 @@ public class BallMove : MonoBehaviour
                 transform.Rotate(0, 0, 180);
             }
             transform.Rotate(transform.forward,Mathf.Clamp(e*0.75f,-75,75), Space.World);
-            rigid.AddForce(transform.right*force,ForceMode.VelocityChange);
+            rigid.AddForce(transform.right*force*e/9*10,ForceMode.VelocityChange);
         }
     }
 
     private void counterUpdate()//show counter in console on every score update
     {
         Debug.Log("Player 1:" + counter[0] + " Player 2(IA):" + counter[1]);
-    }
-
-    IEnumerator SpeedIncrease()//Increases Ball speed over the time
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(1);
-            force += 0.1f;
-        }
     }
 
     IEnumerator ThrowBall()
